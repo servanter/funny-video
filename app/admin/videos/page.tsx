@@ -2,10 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Video } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
 export default function VideoPage() {
+    const router = useRouter();
     const [videoItems, setVideoItems] = useState<Video[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export default function VideoPage() {
         const fetchVideos = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/video?user_id=${FIXED_USER_ID}`);
+                const response = await fetch(`/api/videos?user_id=${FIXED_USER_ID}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -47,28 +49,20 @@ export default function VideoPage() {
         return (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 items-start">
                 <div>
-                    <Skeleton className="h-75 w-75 rounded-xl bg-gray-200" />
-                    <div className="mt-2">
-                        <Skeleton className="h-6 w-75 bg-gray-200" />
-                    </div>
+                    <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
+                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
                 </div>
                 <div>
-                    <Skeleton className="h-75 w-75 rounded-xl bg-gray-200" />
-                    <div className="mt-2">
-                        <Skeleton className="h-6 w-75 bg-gray-200" />
-                    </div>
+                    <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
+                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
                 </div>
                 <div>
-                    <Skeleton className="h-75 w-75 rounded-xl bg-gray-200" />
-                    <div className="mt-2">
-                        <Skeleton className="h-6 w-75 bg-gray-200" />
-                    </div>
+                    <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
+                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
                 </div>
                 <div>
-                    <Skeleton className="h-75 w-75 rounded-xl bg-gray-200" />
-                    <div className="mt-2">
-                        <Skeleton className="h-6 w-75 bg-gray-200" />
-                    </div>
+                    <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
+                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
                 </div>
             </div>
         );
@@ -105,7 +99,11 @@ export default function VideoPage() {
                             <img
                                 src={item.first_image_url}
                                 alt={item.title}
-                                className="w-full h-auto transition-all duration-300 group-hover:scale-110"
+                                className="w-full h-auto transition-all duration-300 group-hover:scale-110 opacity-0 animate-fade-in"
+                                onLoad={(e) => {
+                                    // 图片加载完成后移除透明效果
+                                    e.currentTarget.classList.remove('opacity-0');
+                                }}
                             />
 
                             {/* 描述文字和按钮容器 */}
@@ -114,7 +112,7 @@ export default function VideoPage() {
                                     <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
                                     <p className="text-sm opacity-90">{item.description}</p>
                                 </div>
-                                <Button className="w-full bg-white text-black hover:bg-gray-100 transition-colors duration-200">
+                                <Button className="w-full bg-white text-black hover:bg-gray-100 transition-colors duration-200" onClick={() => router.push(`/admin/videos/${item.id}`)}>
                                     立即观看
                                 </Button>
                             </div>

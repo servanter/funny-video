@@ -73,10 +73,10 @@ export default function UserAccountHeader({ user }: UserAccountNavProps) {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/">Home</Link>
+                <Link href="/admin">Dashboard</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/billing">Billing</Link>
+                <Link href="/admin/billing">Billing</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
