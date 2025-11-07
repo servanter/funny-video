@@ -58,7 +58,6 @@ export async function getTokenUrls(
   bucketName: string = process.env.NEXT_PUBLIC_SUPABASE_PRIVATE_BUCKET || '',
   expiresIn: number = 1800
 ): Promise<Array<{ path: string; signedUrl: string }> | null> {
-  console.log('批量获取带有时效性的下载 URL:', { bucketName, filePaths, expiresIn });
 
   try {
     const { data, error } = await supabase.storage

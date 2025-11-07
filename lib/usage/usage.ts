@@ -141,8 +141,8 @@ export const checkStatus = async ({ userId }: UserId) => {
   const userTodayUsageStr = pipelineResults[0] as string;
   const boostPackRemainingStr = pipelineResults[1] as string;
 
-  const userTodayUsage = parseInt(userTodayUsageStr ?? '0', 10);
-  const boostPackRemaining = parseInt(boostPackRemainingStr ?? '0', 10);
+  const userTodayUsage = parseInt(userTodayUsageStr ?? '0');
+  const boostPackRemaining = parseInt(boostPackRemainingStr ?? '0');
 
   const userDateDefaultLimit: number = ROLES_LIMIT[subscriptionRes.role];
   const userTodayRemaining = Math.max(userDateDefaultLimit - userTodayUsage, 0);

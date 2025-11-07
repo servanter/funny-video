@@ -20,7 +20,7 @@ export default function VideoPage() {
         const fetchVideos = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/videos?user_id=${FIXED_USER_ID}`);
+                const response = await fetch(`/api/admin/videos?user_id=${FIXED_USER_ID}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,19 +50,19 @@ export default function VideoPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 items-start">
                 <div>
                     <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
-                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
+                    <Skeleton className="h-6 w-60 bg-gray-200 mt-4" />
                 </div>
                 <div>
                     <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
-                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
+                    <Skeleton className="h-6 w-60 bg-gray-200 mt-4" />
                 </div>
                 <div>
                     <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
-                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
+                    <Skeleton className="h-6 w-60 bg-gray-200 mt-4" />
                 </div>
                 <div>
                     <Skeleton className="h-60 w-75 rounded-xl bg-gray-200" />
-                    <Skeleton className="h-6 w-75 bg-gray-200 mt-4" />
+                    <Skeleton className="h-6 w-60 bg-gray-200 mt-4" />
                 </div>
             </div>
         );

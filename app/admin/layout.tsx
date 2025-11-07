@@ -13,15 +13,12 @@ export default async function AdminRootLayout({
   const user = (await getCurrentUser()) as UserInfo;
   return (
     <html lang="en">
-      <body>
+      <body className="flex h-screen">
         <SidebarProvider>
           <AppSidebar />
-
-
-
-          <main className="bg-gray-50 w-full">
+          <main className="bg-gray-50 w-full flex flex-col">
             <AppTopMenu userInfo={user} />
-            <div className="p-6">
+            <div className="p-6 flex-1">
               {children}
             </div>
           </main>

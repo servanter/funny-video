@@ -51,8 +51,6 @@ export async function GET(
       );
     }
 
-    console.log('查询到的视频详情:', video);
-
     // 获取视频的签名URL
     const signedVideoUrl = await getTokenUrl(userInfo?.userId + video.result_video_url);
 
@@ -63,9 +61,6 @@ export async function GET(
       create_time: video.create_time.toISOString(),
       update_time: video.update_time.toISOString(),
     };
-
-
-    console.log('查询到的视频详情:', formattedVideo);
 
     return NextResponse.json({
       success: true,
