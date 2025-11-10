@@ -1,4 +1,18 @@
 import prisma from "@/lib/prisma";
+import { Video } from "@prisma/client";
+
+
+export async function listByUserId(userId: string): Promise<Video[]> {
+  return await prisma.video.findMany({
+    where: {
+      user_id: userId,
+    },
+    orderBy: {
+      update_time: 'desc', // 按update_time倒序排序
+    }
+  });
+}
+
 
 export async function getMonthStatistics(userId: string) {
   // 获取当前日期

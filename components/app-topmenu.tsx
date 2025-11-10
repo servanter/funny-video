@@ -27,7 +27,7 @@ export default function AppTopMenu({ userInfo }: AppTopMenuProps) {
           <div className="flex items-center gap-4">
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center py-1 px-3 gap-4 hover:bg-gray-100" >
+              <DropdownMenuTrigger className="flex items-center py-1 px-3 gap-2 hover:bg-gray-100" >
                 <Avatar className="h-10 w-10 border-2 border-purple-600">
                   <AvatarImage src={userInfo?.avatar} alt="Avatar" />
                   <AvatarFallback className="text-lg">Nickname</AvatarFallback>

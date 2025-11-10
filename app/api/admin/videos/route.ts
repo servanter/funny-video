@@ -1,6 +1,6 @@
-import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { getTokenUrls } from '@/lib/supabase/storage';
+import { listByUserId } from '@/lib/video/action';
 import { UserInfo } from '@/types/user';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     // 获取查询参数
-    const searchParams = request.nextUrl.searchParams;
     const { userId } = ((await getCurrentUser()) as UserInfo);
     // 验证必填参数
     if (!userId) {
@@ -27,14 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 查询视频列表
-    const videos = await prisma.video.findMany({
-      where: {
-        user_id: userId,
-      },
-      orderBy: {
-        update_time: 'desc', // 按update_time倒序排序
-      }
-    });
+    const videos = await listByUserId('123');
     if (videos.length === 0) {
       return NextResponse.json({
         success: true,

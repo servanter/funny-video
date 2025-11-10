@@ -40,7 +40,7 @@ export async function getUserUsage(userId: string) {
  * @param {string} params.userId - 用户ID
  * @returns {Promise<{membershipTodayUsage: number, boostPackRemaining: number}>} 包含今日使用量和剩余加速包数量的对象
  */
-async function getUsageFromRedis(userId: string): Promise<{ membershipTodayUsage: number, boostPackRemaining: number }> {
+export async function getUsageFromRedis(userId: string): Promise<{ membershipTodayUsage: number, boostPackRemaining: number }> {
   const pipeline = redis.pipeline();
   const keyDate = getUserDateUsageKey({ userId });
   pipeline.get(keyDate);

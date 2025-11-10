@@ -9,11 +9,11 @@ function formatTimestamp(timestamp: number): string {
 
   // 尝试不同的时间戳格式
   let date: Date;
-  
+
   // 如果是毫秒级时间戳（13位）
   if (timestamp > 1000000000000) {
     date = new Date(timestamp);
-  } 
+  }
   // 如果是秒级时间戳（10位）
   else if (timestamp > 1000000000) {
     date = new Date(timestamp * 1000);
@@ -23,7 +23,7 @@ function formatTimestamp(timestamp: number): string {
     console.warn('Invalid timestamp format:', timestamp);
     return 'Invalid date';
   }
-  
+
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -140,7 +140,7 @@ export default function Dashboard() {
           <p className="text-2xl font-bold text-gray-900 mt-2">
             {lastLogin || '2 hours ago'}
           </p>
-          <p className="text-sm text-green-600 mt-1">Active now</p>
+          <p className="text-sm text-purple-600 mt-1">Active now</p>
         </div>
 
         {/* Total Videos Card */}
@@ -149,7 +149,7 @@ export default function Dashboard() {
           <p className="text-2xl font-bold text-gray-900 mt-2">
             {totalVideos?.toString() || '0'}
           </p>
-          <p className="text-sm text-green-600 mt-1">
+          <p className="text-sm text-purple-600 mt-1">
             +{afterMonthCount} new videos from last month
           </p>
         </div>
@@ -159,11 +159,11 @@ export default function Dashboard() {
           <h3 className="text-sm font-medium text-gray-500">Remaining Credits</h3>
           <p className="text-2xl font-bold text-gray-900 mt-2">
             {remainingStr}
-            <span className="text-sm text-gray-500 ml-2">
-              {membershipExpire > 0 ? `(Expires on: ${membershipExpireFormatted})` : ''}
+            <span className="text-sm text-purple-600 ml-1 italic font-normal">
+              {membershipExpire > 0 ? `(VIP Expires on: ${membershipExpireFormatted})` : ''}
             </span>
           </p>
-          <p className="text-sm text-green-600 mt-1">Credits available</p>
+          <p className="text-sm text-purple-600 mt-1">Credits available</p>
         </div>
       </div>
 

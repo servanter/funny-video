@@ -55,3 +55,14 @@ model Video {
   create_time      DateTime @default(now())
   update_time      DateTime @updatedAt
 }
+
+
+model Billing {
+  id               Int      @id @default(autoincrement())
+  user_id          String
+  order_id         String
+  create_time      DateTime @default(now())
+  update_time      DateTime @updatedAt
+  ip_address       String
+  amount           Int
+}

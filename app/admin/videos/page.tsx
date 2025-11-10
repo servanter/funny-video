@@ -1,9 +1,19 @@
 'use client';
 import { Button } from "@/components/ui/button";
+import {
+    Empty,
+    EmptyContent,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Video } from "@prisma/client";
+import { Bot } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 
 
 export default function VideoPage() {
@@ -20,7 +30,7 @@ export default function VideoPage() {
         const fetchVideos = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/admin/videos?user_id=${FIXED_USER_ID}`);
+                const response = await fetch(`/api/admin/videos`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -80,9 +90,24 @@ export default function VideoPage() {
     // 空数据状态
     if (videoItems.length === 0) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <div className="text-gray-500 text-lg">暂无视频数据</div>
-            </div>
+            <Empty>
+                <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                        <Bot />
+                    </EmptyMedia>
+                    <EmptyTitle>No Video Yet</EmptyTitle>
+                    <EmptyDescription>
+                        You haven&apos;t created any videos yet. Get started by creating
+                        your first video.
+                    </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                    <div className="flex gap-2">
+                        <Button onClick={() => router.push('/')}>Create Video</Button>
+                    </div>
+                </EmptyContent>
+            </Empty>
+
         );
     }
 

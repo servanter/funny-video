@@ -55,14 +55,13 @@ export function AppSidebar() {
                                             isActive && "bg-purple-600"
                                         )}>
                                             <a href={item.url} className={cn(
-                                                "flex items-center gap-3 w-full px-3 py-2 rounded-md transition-colors",
+                                                "flex items-center gap-3 w-full px-3 py-2 rounded-md transition-colors ",
                                                 isActive
-                                                    ? "text-white font-medium hover:bg-purple-600 hover:text-white"
-                                                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                                    ? "text-white hover:bg-purple-500 hover:text-white"
+                                                    : " hover:bg-gary-500 hover:text-black"
                                             )}>
-                                                <item.icon size={6} className={cn(
-                                                    isActive ? "text-white" : "text-gray-400",
-                                                    "!size-6"
+                                                <item.icon className={cn(
+                                                    isActive ? "!size-6 text-white" : "!size-6 hover:text-white"
                                                 )} />
                                                 <span>{item.title}</span>
                                             </a>
