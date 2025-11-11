@@ -80,16 +80,6 @@ export default function VideoDetailPage() {
       <div className="flex flex-col lg:flex-row gap-6 h-full">
         {/* 左侧 - 视频播放器 */}
         <div className="lg:w-1/2 flex flex-col">
-          {/* 标题和描述 */}
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">{video.title}</h1>
-            {video.description && (
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {video.description}
-              </p>
-            )}
-          </div>
-
           {/* 视频播放器 */}
           <div className="bg-black rounded-xl overflow-hidden shadow-lg flex-1 flex items-center justify-center">
             <div className="relative w-full h-0 pb-[56.25%]"> {/* 16:9 比例 */}
@@ -101,7 +91,7 @@ export default function VideoDetailPage() {
               >
                 <source src={videoUrl} type="video/mp4" />
                 <source src={videoUrl} type="video/webm" />
-                您的浏览器不支持视频播放。
+                Your browser does not support video playback.
               </video>
             </div>
           </div>
@@ -111,44 +101,43 @@ export default function VideoDetailPage() {
         <div className="lg:w-1/2 flex flex-col gap-6">
           {/* 视频信息卡片 */}
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-semibold text-gray-900 mb-4 text-lg">视频信息</h3>
+            <h3 className="font-semibold text-gray-900 mb-4 text-lg">Video Information</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 font-medium">视频ID</span>
+                <span className="text-sm text-gray-500 font-medium">Video ID</span>
                 <span className="text-sm text-gray-900 font-mono">{video.id}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 font-medium">创建时间</span>
+                <span className="text-sm text-gray-500 font-medium">Title</span>
+                <span className="text-sm text-gray-900 font-mono">{video.title}</span>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="text-sm text-gray-500 font-medium">Description</span>
+                <span className="text-sm text-gray-900 break-words whitespace-pre-wrap">{video.description}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500 font-medium">Create Time</span>
                 <span className="text-sm text-gray-900">{new Date(video.create_time).toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 font-medium">更新时间</span>
+                <span className="text-sm text-gray-500 font-medium">Update Time</span>
                 <span className="text-sm text-gray-900">{new Date(video.update_time).toLocaleString()}</span>
               </div>
             </div>
           </div>
 
-          {/* 用户信息卡片 */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-semibold text-gray-900 mb-4 text-lg">用户信息</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 font-medium">用户ID</span>
-                <span className="text-sm text-gray-900 font-mono">{video.user_id}</span>
-              </div>
-            </div>
-          </div>
 
           {/* 操作按钮 */}
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-semibold text-gray-900 mb-4 text-lg">操作</h3>
+            <h3 className="font-semibold text-gray-900 mb-4 text-lg">Operate</h3>
             <button
               onClick={() => window.history.back()}
               className="w-full px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 font-medium"
             >
               <Undo2 size={18} />
-              返回列表
+              Back to List
             </button>
+
           </div>
         </div>
       </div>

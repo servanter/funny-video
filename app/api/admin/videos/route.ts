@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 查询视频列表
-    const videos = await listByUserId('123');
+    const videos = await listByUserId(userId);
     if (videos.length === 0) {
       return NextResponse.json({
         success: true,
@@ -39,13 +39,13 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const imageUrls = videos.map(video => getOwnPath(userId, video.first_image_url))
+    const imageUrls = videos.map(video => video.first_image_url);
     const tokenUrls = await getTokenUrls(imageUrls)
 
     const formattedVideos =
       videos.map(video => ({
         ...video,
-        first_image_url: tokenUrls?.find(urlObj => urlObj.path === getOwnPath(userId, video.first_image_url))?.signedUrl || '',
+        first_image_url: tokenUrls?.find(urlObj => urlObj.path === video.first_image_url)?.signedUrl || '',
         create_time: video.create_time.toISOString(),
         update_time: video.update_time.toISOString(),
       }))
@@ -75,9 +75,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function getOwnPath(userId: string, filePath: string) {
-  return `${userId}${filePath}`;
-}
 
 /**
  * 处理OPTIONS请求（CORS预检）

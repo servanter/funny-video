@@ -52,11 +52,13 @@ export async function GET(
     }
 
     // 获取视频的签名URL
-    const signedVideoUrl = await getTokenUrl(userInfo?.userId + video.result_video_url);
+    const signedVideoUrl = await getTokenUrl(video.result_video_url);
+    const signedImageUrl = await getTokenUrl(video.first_image_url);
 
     // 格式化时间字段
     const formattedVideo = {
       ...video,
+      first_image_url: signedImageUrl || '',
       result_video_url: signedVideoUrl || '',
       create_time: video.create_time.toISOString(),
       update_time: video.update_time.toISOString(),

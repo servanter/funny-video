@@ -38,6 +38,7 @@ export default function VideoPage() {
 
                 const result = await response.json();
 
+                console.log('result:', result);
                 if (result.success) {
                     setVideoItems(result.data.videos);
                 } else {
@@ -138,7 +139,7 @@ export default function VideoPage() {
                                     <p className="text-sm opacity-90">{item.description}</p>
                                 </div>
                                 <Button className="w-full bg-white text-black hover:bg-gray-100 transition-colors duration-200" onClick={() => router.push(`/admin/videos/${item.id}`)}>
-                                    立即观看
+                                    View
                                 </Button>
                             </div>
                         </div>
