@@ -1,13 +1,11 @@
 "use client";
 
-import { imageConfigs } from "@/config/imageConfig";
-import Image from "next/image";
-import { ReactCompareSlider } from "react-compare-slider";
+import { DescriptionConfig } from "@/config/DescriptionConfig";
 
 const Features = () => {
   return (
     <div id="features" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      {imageConfigs.map((config, index) => (
+      {DescriptionConfig.map((config, index) => (
         <div key={index} className="grid grid-cols-1 gap-8 md:grid-cols-2 mb-12">
           {/* 偶数索引：右图左文 */}
           {index % 2 === 0 ? (
@@ -22,7 +20,7 @@ const Features = () => {
                   onClick={() => {
                     const element = document.getElementById('try-it-now');
                     if (element) {
-                      element.scrollIntoView({ 
+                      element.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                       });
@@ -34,28 +32,16 @@ const Features = () => {
               </div>
 
               <div className="flex items-center justify-center">
-                <div className="overflow-hidden rounded-lg shadow-lg w-full max-w-2xl ">
-                  <ReactCompareSlider
-                    itemOne={
-                      <Image
-                        src={config.old_image}
-                        alt=""
-                        width={600}
-                        height={330}
-                        className="object-cover h-full w-full"
-                      />
-                    }
-                    itemTwo={
-                      <Image
-                        src={config.new_image}
-                        alt=""
-                        width={600}
-                        height={330}
-                        className="object-cover h-full w-full"
-                      />
-                    }
-                    className="rounded-lg"
-                  />
+                <div className="overflow-hidden rounded-lg w-full max-w-2xl">
+                  <video
+                    muted
+                    autoPlay
+                    loop
+                    className="w-full max-h-96 object-contain rounded-lg"
+                  >
+                    <source src={config.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
             </>
@@ -63,28 +49,16 @@ const Features = () => {
             /* 奇数索引：左图右文 */
             <>
               <div className="flex items-center justify-center">
-                <div className="overflow-hidden rounded-lg shadow-lg w-full max-w-2xl ">
-                  <ReactCompareSlider
-                    itemOne={
-                      <Image
-                        src={config.old_image}
-                        alt=""
-                        width={600}
-                        height={330}
-                        className="object-cover h-full w-full"
-                      />
-                    }
-                    itemTwo={
-                      <Image
-                        src={config.new_image}
-                        alt=""
-                        width={600}
-                        height={330}
-                        className="object-cover h-full w-full"
-                      />
-                    }
-                    className="rounded-lg"
-                  />
+                <div className="overflow-hidden rounded-lg w-full max-w-2xl">
+                  <video
+                    muted
+                    autoPlay
+                    loop
+                    className="w-full max-h-96 object-contain rounded-lg"
+                  >
+                    <source src={config.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
 
@@ -98,7 +72,7 @@ const Features = () => {
                   onClick={() => {
                     const element = document.getElementById('try-it-now');
                     if (element) {
-                      element.scrollIntoView({ 
+                      element.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                       });

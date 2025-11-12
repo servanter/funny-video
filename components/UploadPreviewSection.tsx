@@ -1,20 +1,18 @@
 "use client";
 
-import { UserInfo } from "@/types/user";
-import { UserBalance } from "@/types/userBalance";
+import { UserUsage } from "@/types/user";
 import { UploadPreviewCard } from "./UploadPreviewCard";
 
 interface UploadPreviewSectionProps {
-  user: UserInfo | null;
-  userBalance: UserBalance | null;
+  userUsage: UserUsage | null;
   selectedImageIndex?: number;
 }
 
-export default function UploadPreviewSection({ user, userBalance, selectedImageIndex }: UploadPreviewSectionProps) {
+export default function UploadPreviewSection({ userUsage, selectedImageIndex }: UploadPreviewSectionProps) {
   return (
     <div>
       {/* 上传预览组件 */}
-      <UploadPreviewCard user={user} userBalance={userBalance} selectedImageIndex={selectedImageIndex} />
+      <UploadPreviewCard userUsage={userUsage} selectedImageIndex={selectedImageIndex} />
     </div>
   )
 }

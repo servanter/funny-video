@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageConfig } from "@/config/imageConfig";
+import { ImageConfig } from "@/config/DescriptionConfig";
 import Image from "next/image";
 import { ReactCompareSlider } from "react-compare-slider";
 

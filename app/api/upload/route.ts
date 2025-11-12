@@ -1,4 +1,4 @@
-import { imageConfigs } from "@/config/imageConfig";
+import { imageConfigs } from "@/config/DescriptionConfig";
 import { editImageWithPrompt } from "@/lib/aliyun/aliyun";
 import { getCurrentUser } from "@/lib/session";
 import { checkStatus, decrementBoostPack } from "@/lib/usage/usage";

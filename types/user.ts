@@ -24,4 +24,12 @@ export interface UserInfo {
   accessToken?: string;
 }
 
+export interface UserUsage {
+  membershipExpire: number;
+  role: number;
+  membershipTodayRemaing: number;
+  boostPackRemaining: number;
+  user: User;
+}
+
 export interface PrismaUser extends User { }

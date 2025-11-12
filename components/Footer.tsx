@@ -1,5 +1,5 @@
 import ContactMe from "@/components/ContactMe";
-import { imageConfigs } from "@/config/imageConfig";
+import { DescriptionConfig } from "@/config/DescriptionConfig";
 import Link from "next/link";
 
 const Footer = () => {
@@ -35,7 +35,7 @@ const Footer = () => {
             {/* Tools Column */}
             <div className="flex flex-col space-y-2">
               <h3 className="text-white font-bold">Free Tools</h3>
-              {imageConfigs.map((config) => (
+              {DescriptionConfig.map((config) => (
                 <Link
                   key={config.name}
                   href={`/tools/${config.link}`}
