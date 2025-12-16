@@ -1,0 +1,324 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { UploadSampleConfig } from '@/config/UploadSampleConfig';
+import { UserUsage } from "@/types/user";
+import { UserBalance } from '@/types/userBalance';
+import dayjs from 'dayjs';
+import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+
+interface UploadPreviewCardProps {
+  onUpload?: (file: File) => void;
+  userBalance?: UserBalance | null;
+  selectedImageIndex?: number;
+  userUsage: UserUsage | null
+}
+
+export function UploadPreviewCard({ onUpload, userUsage, selectedImageIndex = 0 }: UploadPreviewCardProps) {
+  // 安全解构，提供默认值
+  const {
+    membershipExpire = 0,
+    user: userInfo = null
+  } = userUsage || {};
+
+  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedIndex, setSelectedImageIndex] = useState<number>(selectedImageIndex);
+  const [isLoading, setIsLoading] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [useCredit, setUseCredit] = useState(20);
+  const [boostPackRemaining, setBoostPackRemaining] = useState(userUsage?.boostPackRemaining || 0);
+  const [membershipTodayRemaing, setMembershipTodayRemaing] = useState(userUsage?.membershipTodayRemaing || 0);
+  const [selectedMoments, setSelectedMoments] = useState<string[]>(["3", "8"]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const allowedTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/wmv', 'video/flv', 'video/webm', 'video/mkv'];
+    const allowedExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mkv'];
+
+    const validFiles = Array.from(files).filter(file => {
+      const isValidType = allowedTypes.includes(file.type);
+      const isValidExtension = allowedExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+
+      if (!isValidType && !isValidExtension) {
+        toast.error(`File ${file.name} is not a supported video format`);
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) {
+      toast.error('Please select valid video files');
+      return;
+    }
+
+    setUploadedFiles(validFiles);
+    updatePreview(validFiles[0]);
+  };
+
+  const updatePreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
+    if (onUpload) onUpload(file);
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleSubmit = async () => {
+
+    if (!userInfo) {
+      toast.error("Please login first");
+      return;
+    }
+
+    if (!preview) {
+      toast.error('Please upload a video first');
+      return;
+    }
+
+    const file = uploadedFiles.length > 0 ? uploadedFiles[0] : fileInputRef.current?.files?.[0];
+    if (!file) {
+      toast.error('Please upload a video first');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('selectedMoments', JSON.stringify(selectedMoments));
+
+    // 显示加载中的toast提示，设置为永久显示直到手动关闭
+    const loadingToast = toast.loading('Generating...', {
+      duration: Infinity // 设置为无限时长，只有手动调用dismiss才会消失
+    });
+
+    try {
+      // 设置加载状态为true
+      setIsLoading(true);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file');
+      }
+
+      const result = await response.json();
+
+      // 销毁加载中的toast
+      toast.dismiss(loadingToast);
+      if (result.code === 403) {
+        toast.error(result.error || 'Insufficient boost pack balance. Please recharge.');
+        return;
+      }
+      if (result.code !== 0) {
+        toast.error('Upload fail, please try again');
+        return;
+      }
+
+      console.log('Upload result++++++++++:', result);
+      if (result && result.resultVideoUrl) {
+        setVideoUrl(result.resultVideoUrl);
+        setMembershipTodayRemaing(result.membershipTodayRemaing);
+        setBoostPackRemaining(result.boostPackRemaining);
+      }
+      toast.success('Success');
+
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      // 销毁加载中的toast，显示错误提示
+      toast.dismiss(loadingToast);
+      toast.error('Upload fail, please try again');
+    } finally {
+      // 无论成功还是失败，都将加载状态设置为false
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6 p-6 bg-white rounded-lg shadow-lg border-t border-b border-gray-200 w-[1200px] mt-10">
+
+      {/* 内容区域 */}
+      <div className="flex gap-6 min-h-0">
+        {/* 左侧上传区域 */}
+        <div className="w-1/2 flex flex-col gap-4 min-h-0">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-sm font-medium text-gray-600 text-left" id="try-it-now">Upload a video</h3>
+            <div className="border-b border-gray-200 w-full"></div>
+          </div>
+
+          <div
+            className="border-2 border-dashed min-h-[200px] border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 transition-colors flex flex-col items-center justify-center"
+            onClick={triggerFileInput}
+          >
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+              accept="video/mp4,video/avi,video/mov,video/wmv,video/flv,video/webm,video/mkv"
+            />
+            {preview ? (
+              <div className="flex flex-col items-center gap-4">
+
+                {uploadedFiles.length > 0 && (
+                  <div className="w-full max-h-32 overflow-y-auto">
+                    <div className="text-sm text-gray-600 font-medium mb-2">Uploaded Files:</div>
+                    <div className="space-y-1">
+                      {uploadedFiles.map((file, index) => (
+                        <div key={index} className="text-xs text-gray-500 bg-gray-50 p-2 rounded text-center">
+                          {file.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-gray-500 mb-2">Click or drag and drop video files here to upload</p>
+                <p className="text-xs text-gray-400">Supported formats: MP4, AVI, MOV, WMV, FLV, WebM, MKV</p>
+                <p className="text-xs text-gray-400">Maximum file size: 10MB</p>
+              </div>
+            )}
+          </div>
+
+          {/* 图片切换区域 */}
+          <div className="flex flex-col gap-2 mt-4">
+            <p className="text-sm text-gray-600 text-left">Choose Style</p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 mt-2 max-w-full z-0">
+            {UploadSampleConfig.map((sample, index) => (
+              <div
+                key={index}
+                className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden cursor-pointer transition-transform relative z-0 ${selectedIndex === index ? 'ring-2 ring-purple-500' : ''}`}
+                onClick={() => setSelectedImageIndex(index)}
+              >
+                <img
+                  src={sample.href}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-30 flex items-end justify-center z-0 pb-1">
+                  <div className="p-1 text-white text-xs bg-slate-500 rounded-sm">
+                    {sample.name}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="border-b border-gray-200 w-full"></div>
+          <div className="flex gap-6 items-center justify-between">
+            <p className="text-sm text-gray-600 text-left gap-4">Select Moments
+            </p>
+
+            {useCredit > 0 && (
+              <p className="text-xs text-purple-800 font-bold">Use {useCredit} credits
+              </p>
+            )}
+          </div>
+
+          <div className="max-w-full">
+            <ToggleGroup
+              type="multiple"
+              value={selectedMoments}
+              onValueChange={(selectedValues) => {
+                setSelectedMoments(selectedValues);
+                const selectedCount = selectedValues.length;
+                setUseCredit(selectedCount * 10);
+              }}
+            >
+              {Array.from({ length: 13 }, (_, i) => i + 3).map((seconds) => (
+                <ToggleGroupItem key={seconds} value={seconds.toString()} className='border border-gray-300 bg-white text-gray-700 rounded-md hover:border-purple-400 hover:bg-blue-50 transition-all duration-200 data-[state=on]:border-purple-500 data-[state=on]:bg-purple-500 data-[state=on]:text-white data-[state=on]:hover:border-purple-600 data-[state=on]:hover:bg-purple-600 '>
+                  {seconds}s
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          </div>
+          <div className="border-b border-gray-200 w-full"></div>
+
+          <div className='flex gap-2 items-center text-gray-500 text-xs justify-center'>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+              <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+            </svg>
+            <span className="">Current Credits：   {boostPackRemaining <= 0 ? 0 : boostPackRemaining} + {membershipTodayRemaing <= 0 ? 0 : membershipTodayRemaing} (VIP)</span>
+            <span className='h-3'>|</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span className="">Member Expire Time：
+              {membershipExpire > 0 && dayjs(membershipExpire).format('YYYY-MM-DD HH:mm')}
+            </span>
+          </div>
+
+          <div className='w-full flex justify-between gap-4 '>
+            <Button className='h-10 w-2/4 bg-gray-100 text-gray-800 hover:bg-gray-200 text-sm' onClick={triggerFileInput}>
+
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Choose Video
+            </Button>
+
+            <Button className='h-10 w-2/4 bg-red-100 text-red-800 hover:bg-red-200 text-sm' onClick={handleSubmit}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Submit
+            </Button>
+
+          </div>
+
+        </div>
+
+        {/* 右侧预览区域 */}
+        <div className="w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-sm font-medium text-gray-600 text-left">Result</h3>
+            <div className="border-b border-gray-200 w-full"></div>
+
+          </div>
+
+          <div className="border border-dashed border-gray-300 p-2 shadow-inner flex items-center justify-center h-[450px] w-[80%] mx-auto mt-4 overflow-hidden">
+            {isLoading ? (
+              <div className="flex space-x-2 animate-pulse">
+                <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+              </div>
+            ) : videoUrl ? (
+              <video
+                key={`result-${videoUrl}`}
+                controls
+                className="max-w-[100%] max-h-full object-contain rounded-lg"
+              >
+                <source src={videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <video
+                key={`preview-${selectedIndex}`}
+                controls
+                className="max-w-[100%] max-h-full object-contain rounded-lg"
+              >
+                <source src={UploadSampleConfig[selectedIndex].video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
