@@ -55,6 +55,7 @@ model Video {
   result_video_url String
   create_time      DateTime @default(now())
   update_time      DateTime @updatedAt
+  duration        String?
 }
 
 
