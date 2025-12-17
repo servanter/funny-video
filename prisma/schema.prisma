@@ -23,6 +23,7 @@ model Dialog {
   uid       User     @relation(fields: [userId], references: [userId])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  duration  String
 }
 
 model User {
