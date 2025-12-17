@@ -69,7 +69,13 @@ export async function getTokenUrls(
     if (error) {
       throw error;
     }
-    return data || [];
+    
+    // 过滤掉无效的数据，确保 path 和 signedUrl 都存在
+    const validData = data?.filter(item => item.path && item.signedUrl) || [];
+    return validData.map(item => ({
+      path: item.path!,
+      signedUrl: item.signedUrl
+    }));
   } catch (error) {
     console.error('批量获取下载 URL 失败:', error);
     return null;
