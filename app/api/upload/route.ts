@@ -13,6 +13,7 @@ export const runtime = 'nodejs';
 export async function POST(request: Request) {
   const user = (await getCurrentUser()) as UserInfo;
   const form = new IncomingForm();
+  console.log(user, 'starting file upload');
 
   try {
     // Create proper stream for formidable
@@ -93,7 +94,8 @@ export async function POST(request: Request) {
 
     // 创建原生 FormData
     const externalFormData = new FormData();
-    const blob = new Blob([fileBuffer], { type: file.mimetype || 'video/mp4' });
+    const uint8Array = new Uint8Array(fileBuffer);
+    const blob = new Blob([uint8Array], { type: file.mimetype || 'video/mp4' });
     externalFormData.append('file', blob, file.originalFilename);
 
     // 添加查询参数
