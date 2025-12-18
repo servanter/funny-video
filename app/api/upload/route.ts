@@ -158,7 +158,7 @@ export async function POST(request: Request) {
       }
     } else {
       if (userUsage.boostPackRemaining >= totalConsumption) {
-        await decrementBoostPack(user.userId);
+        await decrementBoostPack(user.userId, totalConsumption);
       } else {
         return NextResponse.json({
           message: 'Not enough credit',
