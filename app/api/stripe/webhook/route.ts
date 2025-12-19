@@ -46,8 +46,8 @@ export async function POST(request: Request) {
       if (productId && productId === 'prod_T8SB2KQsiFVbHs' && userId && userId.length > 0) {
         singlePayDeal(userId, paymentIntent.id)
         console.log('add Biiiling before ', userId, paymentIntent.amount_received, paymentIntent.id)
-        addBilling(userId, paymentIntent.amount_received, paymentIntent.id)
-        console.log('add Biiiling after')
+        const billingResult = await addBilling(userId, paymentIntent.amount_received, paymentIntent.id)
+        console.log('add Biiiling after ', billingResult)
       }
       if (!user) return NextResponse.json({ message: "Your account was not found" }, { status: 401 });
       break;
