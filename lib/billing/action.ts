@@ -39,9 +39,9 @@ export async function addBilling(
   userId: string,
   amount: number,
   orderId: string
-) {
+): Promise<{ success: boolean; billing?: Billing; error?: string }> {
   try {
-    await prisma.billing.create({
+    const billing = await prisma.billing.create({
       data: {
         user_id: userId,
         amount: amount,
@@ -51,7 +51,14 @@ export async function addBilling(
         update_time: new Date()
       }
     });
+    
+    return { success: true, billing };
   } catch (error) {
-    console.log(error)
+    console.error('Error creating billing record:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error occurred' 
+    };
   }
 }
+
