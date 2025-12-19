@@ -1,3 +1,4 @@
+import { addBilling } from '@/lib/billing/action';
 import { getOrderUniqueId, ONE_DAY } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
       });
       if (productId && productId === 'prod_T8SB2KQsiFVbHs' && userId && userId.length > 0) {
         singlePayDeal(userId, paymentIntent.id)
+        addBilling(userId, paymentIntent.amount_received, paymentIntent.id)
       }
       if (!user) return NextResponse.json({ message: "Your account was not found" }, { status: 401 });
       break;

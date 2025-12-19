@@ -101,8 +101,8 @@ export async function POST(request: Request) {
     // 添加查询参数
     const params = new URLSearchParams({
       user_id: user.userId,
-      title: 'bbbbbb',
-      description: 'aaaaaaa',
+      title: file.originalFilename || 'unknown',
+      description: `file:${file.originalFilename || 'unknown'}`,
       selected_moments: selectedMoments.join(',')
     });
 
