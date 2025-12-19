@@ -42,9 +42,12 @@ export async function POST(request: Request) {
         where: { userId: userId.toString() },
         select: { userId: true, email: true, username: true },
       });
+      
       if (productId && productId === 'prod_T8SB2KQsiFVbHs' && userId && userId.length > 0) {
         singlePayDeal(userId, paymentIntent.id)
+        console.log('add Biiiling before')
         addBilling(userId, paymentIntent.amount_received, paymentIntent.id)
+        console.log('add Biiiling after')
       }
       if (!user) return NextResponse.json({ message: "Your account was not found" }, { status: 401 });
       break;
