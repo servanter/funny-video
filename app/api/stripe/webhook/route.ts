@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       
       if (productId && productId === 'prod_T8SB2KQsiFVbHs' && userId && userId.length > 0) {
         singlePayDeal(userId, paymentIntent.id)
-        console.log('add Biiiling before')
+        console.log('add Biiiling before ', userId, paymentIntent.amount_received, paymentIntent.id)
         addBilling(userId, paymentIntent.amount_received, paymentIntent.id)
         console.log('add Biiiling after')
       }
