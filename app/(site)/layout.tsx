@@ -3,6 +3,7 @@ import GoogleAnalytics from "@/app/(site)/GoogleAnalytics";
 import { NextAuthProvider } from "@/app/(site)/providers";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ShenmaVerification from "@/components/ShenmaVerification";
 import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteConfig } from "@/config/site";
@@ -52,7 +53,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5904599914359772" crossOrigin="anonymous"></script>
-
+        <ShenmaVerification />
       </head>
       <body
         className={cn(
