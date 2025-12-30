@@ -34,6 +34,7 @@ export async function listBilling(page: number, pageSize: number, userId: string
   return new BillingResult(list, total);
 }
 
+
 export async function addBilling(
   userId: string,
   amount: number,
@@ -60,3 +61,4 @@ export async function addBilling(
     };
   }
 }
+
