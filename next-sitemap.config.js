@@ -4,7 +4,7 @@
  * @see https://weijunext.com/article/979b9033-188c-4d88-bfff-6cf74d28420d
  */
 module.exports = {
-  siteUrl: "https://www.smartexcel.cc",
+  siteUrl: "https://www.funny-video.top",
   changefreq: "daily",
   priority: 0.7,
   exclude: ["/server-sitemap.xml", "/404"],

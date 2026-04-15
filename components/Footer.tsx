@@ -30,6 +30,12 @@ const Footer = () => {
               <Link href="https://www.aimage.top" className="text-gray-300 hover:text-pink-400 transition-colors">
                 AImage
               </Link>
+              <Link href="/blog" className="text-gray-300 hover:text-pink-400 transition-colors">
+                Blog
+              </Link>
+              <Link href="/faq" className="text-gray-300 hover:text-pink-400 transition-colors">
+                FAQ
+              </Link>
               {/* <Link href="#" className="text-gray-300 hover:text-pink-400 transition-colors">
                 Use Cases
               </Link> */}

@@ -3,15 +3,15 @@ import { SiteConfig } from "@/types/siteConfig"
 const baseSiteConfig = {
   name: "Funny Video For Free",
   description:
-    "Support uploading any photo to quickly generate cartoon avatars in various styles, meeting all social platforms’ avatar needs.",
-  url: "https://ai-magic-ten.vercel.app/",
-  ogImage: "https://ai-magic-ten.vercel.app/og.png",
-  metadataBase: new URL("https://ai-magic-ten.vercel.app"),
-  keywords: ["SmartExcel", "ChatGPT", "Excel formulas", "Excel AI", "文心一言", "智谱"],
+    "Create funny and viral short videos with AI style transfer. Transform any video into soul painting style in seconds. Free online tool for TikTok, Instagram, and social media.",
+  url: "https://www.funny-video.top",
+  ogImage: "https://www.funny-video.top/og.png",
+  metadataBase: new URL("https://www.funny-video.top"),
+  keywords: ["funny video", "AI video maker", "video style transfer", "soul painting video", "short video creator", "TikTok video maker", "AI video effects", "free video tool"],
   authors: [
     {
       name: "servanter",
-      url: "https://ai-magic-ten.vercel.app",
+      url: "https://www.funny-video.top",
     }
   ],
   creator: '@servanter',
