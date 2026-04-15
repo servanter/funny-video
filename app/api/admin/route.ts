@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCurrentUser } from '@/lib/session';
 import { getUserUsage } from "@/lib/user/action";
 import { getLastMonthTotalCount, getMonthStatistics, getTotalCount } from '@/lib/video/action';

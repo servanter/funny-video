@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { listBilling } from "@/lib/billing/action";
 import { getCurrentUser } from "@/lib/session";
 import { UserInfo } from "@/types/user";

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getCurrentUser } from '@/lib/session';
 import { getTokenUrls } from '@/lib/supabase/storage';
 import { listByUserId } from '@/lib/video/action';
